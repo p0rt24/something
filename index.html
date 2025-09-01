@@ -172,36 +172,27 @@
         </div>
         
         <div class="content">
-            <div class="schedule-grid" id="schedule">
-                <!-- Расписание будет сгенерировано JavaScript -->
-            </div>
+            <div class="schedule-grid" id="schedule"></div>
         </div>
     </div>
 
     <script>
-        // Функция для определения номера недели с 2 сентября 2025
         function getWeekNumber() {
-            const startDate = new Date('2025-09-02'); // 2 сентября 2025
+            const startDate = new Date('2025-09-02');
             const currentDate = new Date();
-            
-            // Если текущая дата до 2 сентября 2025, показываем как нулевую неделю
             if (currentDate < startDate) {
                 return 0;
             }
-            
             const diffTime = currentDate.getTime() - startDate.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             const weekNumber = Math.floor(diffDays / 7) + 1;
-            
             return weekNumber;
         }
-        
-        // Функция для получения текущего дня недели (0 = воскресенье)
+
         function getCurrentDay() {
             return new Date().getDay();
         }
-        
-        // Функция для форматирования даты
+
         function formatDate() {
             const options = { 
                 weekday: 'long', 
@@ -211,17 +202,15 @@
             };
             return new Date().toLocaleDateString('ru-RU', options);
         }
-        
-        // Расписание по неделям
+
         function getSchedule(weekNumber) {
-            // Для нулевой недели используем расписание первой недели
-            const isOddWeek = (weekNumber === 0) || (weekNumber % 2 === 1); // 0, 1 и 3 недели - нечетные
-            
+            const isOddWeek = (weekNumber === 0) || (weekNumber % 2 === 1);
             const schedule = {
                 'Понедельник': [
-                    'Внеурочная деятельность',
+                    'Разговоры о важном',
                     'Физкультура',
-                    'Математика'
+                    'Математика',
+                    'Окружающий мир'
                 ],
                 'Вторник': [
                     'Чтение',
@@ -231,8 +220,7 @@
                 'Среда': [
                     'Русский язык',
                     'Чтение',
-                    'Математика',
-                    'Окружающий мир'
+                    'Математика'
                 ],
                 'Четверг': isOddWeek ? [
                     'Математика',
@@ -249,58 +237,50 @@
                     'Физкультура'
                 ]
             };
-            
             return schedule;
         }
-        
-        // Функция для отображения расписания
+
         function displaySchedule() {
             const weekNumber = getWeekNumber();
             const currentDay = getCurrentDay();
             const schedule = getSchedule(weekNumber);
             const scheduleContainer = document.getElementById('schedule');
-            
-            // Обновляем информацию о неделе
+
             document.getElementById('current-week').textContent = `Текущая неделя: ${weekNumber}`;
             document.getElementById('current-date').textContent = formatDate();
-            
+
             scheduleContainer.innerHTML = '';
-            
-            // Дни недели (1 = понедельник, 5 = пятница)
             const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
-            
+
             weekDays.forEach((day, index) => {
                 const dayCard = document.createElement('div');
                 dayCard.className = 'day-card';
-                
-                // Подсвечиваем текущий день (1-5 соответствует пн-пт)
                 if (currentDay === index + 1) {
                     dayCard.classList.add('today');
                 }
-                
+
                 const dayName = document.createElement('div');
                 dayName.className = 'day-name';
                 dayName.textContent = day;
-                
+
                 const lessonsList = document.createElement('ul');
                 lessonsList.className = 'lessons';
-                
+
                 schedule[day].forEach((lesson, lessonIndex) => {
                     const lessonItem = document.createElement('li');
                     lessonItem.className = 'lesson';
-                    
+
                     const lessonNumber = document.createElement('div');
                     lessonNumber.className = 'lesson-number';
                     lessonNumber.textContent = lessonIndex + 1;
-                    
+
                     const lessonName = document.createElement('div');
                     lessonName.className = 'lesson-name';
                     lessonName.textContent = lesson;
-                    
+
                     lessonItem.appendChild(lessonNumber);
                     lessonItem.appendChild(lessonName);
-                    
-                    // Добавляем примечание для музыки/изо
+
                     if (day === 'Вторник' && lessonIndex === 1) {
                         const note = document.createElement('div');
                         note.className = 'special-note';
@@ -313,20 +293,17 @@
                         }
                         lessonName.appendChild(note);
                     }
-                    
+
                     lessonsList.appendChild(lessonItem);
                 });
-                
+
                 dayCard.appendChild(dayName);
                 dayCard.appendChild(lessonsList);
                 scheduleContainer.appendChild(dayCard);
             });
         }
-        
-        // Отображаем расписание при загрузке страницы
+
         displaySchedule();
-        
-        // Обновляем расписание каждую минуту (на случай смены дня)
         setInterval(displaySchedule, 60000);
     </script>
 </body>
