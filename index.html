@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расписание уроков - Premium Edition</title>
+    <title>Расписание уроков</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -13,639 +13,85 @@
             box-sizing: border-box;
         }
         
-        :root {
-            --primary-red: #ff3b3b;
-            --secondary-red: #ff6b6b;
-            --dark-red: #d32f2f;
-            --light-red: #ff8787;
-            --accent-red: #ff5252;
-            --neon-red: #ff0844;
-            --deep-red: #b71c1c;
-            --rose-red: #ff4757;
-            --crimson: #dc143c;
-            --blood-red: #8b0000;
-            
-            --gradient-primary: linear-gradient(135deg, #ff3b3b 0%, #ff6b6b 50%, #ff8787 100%);
-            --gradient-dark: linear-gradient(135deg, #1a0000 0%, #2d0a0a 50%, #4a0000 100%);
-            --gradient-neon: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-            --gradient-fire: linear-gradient(45deg, #ff0844, #ff5252, #ff0844);
-            --gradient-shimmer: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            
-            --bg-dark: #0a0000;
-            --bg-darker: #050000;
-            --bg-card: #1a0505;
-            --bg-card-hover: #2a0808;
-            
-            --text-primary: #ffffff;
-            --text-secondary: #ffcccc;
-            --text-muted: #ff9999;
-            --text-dark: #1a0000;
-            
-            --shadow-sm: 0 2px 8px rgba(255, 59, 59, 0.1);
-            --shadow-md: 0 4px 16px rgba(255, 59, 59, 0.2);
-            --shadow-lg: 0 8px 32px rgba(255, 59, 59, 0.3);
-            --shadow-xl: 0 12px 48px rgba(255, 59, 59, 0.4);
-            --shadow-neon: 0 0 20px rgba(255, 8, 68, 0.6), 0 0 40px rgba(255, 8, 68, 0.4);
-            
-            --border-radius-sm: 8px;
-            --border-radius-md: 16px;
-            --border-radius-lg: 24px;
-            --border-radius-xl: 32px;
-            
-            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-darker);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 0;
-            position: relative;
-            overflow-x: hidden;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255, 59, 59, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(255, 8, 68, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 82, 82, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-            animation: backgroundPulse 10s ease-in-out infinite;
-        }
-
-        @keyframes backgroundPulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(255, 59, 59, 0.03) 2px,
-                    rgba(255, 59, 59, 0.03) 4px
-                );
-            pointer-events: none;
-            z-index: 0;
-            animation: scanlines 8s linear infinite;
-        }
-
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-        
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary-red);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary-red);
-            animation: float 15s infinite ease-in-out;
-            opacity: 0;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                opacity: 0;
-                transform: translateY(0) translateX(0) scale(0);
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(50px) scale(1);
-            }
-        }
-
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
-        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 15s; }
-        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 18s; }
-        .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 14s; }
-        .particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 16s; }
-        .particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 13s; }
-        .particle:nth-child(7) { left: 70%; animation-delay: 2s; animation-duration: 17s; }
-        .particle:nth-child(8) { left: 80%; animation-delay: 4s; animation-duration: 15s; }
-        .particle:nth-child(9) { left: 90%; animation-delay: 1s; animation-duration: 19s; }
-        .particle:nth-child(10) { left: 95%; animation-delay: 3s; animation-duration: 14s; }
-
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.08;
-            animation: floatShape 25s infinite ease-in-out;
-            filter: blur(2px);
-        }
-
-        .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            background: var(--gradient-primary);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            top: -10%;
-            left: -5%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            background: var(--gradient-neon);
-            border-radius: 60% 40% 30% 70% / 60% 50% 40% 50%;
-            top: 40%;
-            right: -10%;
-            animation-delay: -8s;
-        }
-
-        .shape:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            background: var(--gradient-fire);
-            border-radius: 50% 50% 70% 30% / 50% 60% 40% 50%;
-            bottom: -5%;
-            left: 30%;
-            animation-delay: -15s;
-        }
-
-        @keyframes floatShape {
-            0%, 100% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            33% {
-                transform: translate(30px, -50px) rotate(120deg) scale(1.1);
-            }
-            66% {
-                transform: translate(-30px, 30px) rotate(240deg) scale(0.9);
-            }
-        }
-
-        .app-wrapper {
-            position: relative;
-            z-index: 2;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 30px 20px;
+            color: #2c3e50;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            position: relative;
-        }
-
-        .glass {
-            background: rgba(26, 5, 5, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 59, 59, 0.2);
-        }
-
-        @keyframes neonBorder {
-            0%, 100% {
-                box-shadow: 
-                    0 0 5px var(--neon-red),
-                    0 0 10px var(--neon-red),
-                    0 0 20px var(--neon-red),
-                    inset 0 0 10px rgba(255, 8, 68, 0.2);
-            }
-            50% {
-                box-shadow: 
-                    0 0 10px var(--neon-red),
-                    0 0 20px var(--neon-red),
-                    0 0 40px var(--neon-red),
-                    inset 0 0 20px rgba(255, 8, 68, 0.4);
-            }
         }
 
         .header {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-xl);
-            padding: 50px 40px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 59, 59, 0.3);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: var(--gradient-fire);
-            opacity: 0.05;
-            animation: headerRotate 20s linear infinite;
-        }
-
-        @keyframes headerRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-shimmer);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
             text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
         }
 
-        .header-title {
-            font-size: 4em;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: titleGlow 2s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(255, 59, 59, 0.5);
-            position: relative;
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 15px;
         }
 
-        @keyframes titleGlow {
-            0%, 100% {
-                filter: brightness(1) drop-shadow(0 0 10px rgba(255, 59, 59, 0.6));
-            }
-            50% {
-                filter: brightness(1.2) drop-shadow(0 0 20px rgba(255, 59, 59, 0.8));
-            }
-        }
-
-        .header-subtitle {
-            font-size: 1.3em;
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        .week-badge-container {
+        .week-info {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 20px;
-            margin-top: 25px;
             flex-wrap: wrap;
+            margin-top: 20px;
         }
 
         .week-badge {
-            background: var(--gradient-neon);
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-size: 1.4em;
-            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: var(--shadow-neon);
-            animation: badgePulse 2s ease-in-out infinite;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .week-badge::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            animation: badgeRotate 4s linear infinite;
-        }
-
-        @keyframes badgePulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(255, 8, 68, 0.6), 0 0 40px rgba(255, 8, 68, 0.4);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 30px rgba(255, 8, 68, 0.8), 0 0 60px rgba(255, 8, 68, 0.6);
-            }
-        }
-
-        @keyframes badgeRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .date-display {
-            background: rgba(255, 59, 59, 0.1);
-            padding: 12px 30px;
-            border-radius: 30px;
+            color: #7f8c8d;
             font-size: 1.1em;
-            color: var(--text-secondary);
-            border: 1px solid rgba(255, 59, 59, 0.3);
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 8px;
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            border: 1px solid rgba(255, 59, 59, 0.2);
-            box-shadow: var(--shadow-md);
-        }
-
-        .nav-tab {
-            flex: 1;
-            padding: 18px 30px;
-            background: transparent;
-            border: 2px solid transparent;
-            border-radius: var(--border-radius-md);
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition-base);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            transition: var(--transition-base);
-            z-index: -1;
-        }
-
-        .nav-tab:hover {
-            color: var(--text-primary);
-            border-color: rgba(255, 59, 59, 0.4);
-        }
-
-        .nav-tab:hover::before {
-            left: 0;
-        }
-
-        .nav-tab.active {
-            background: var(--gradient-primary);
-            color: white;
-            border-color: var(--primary-red);
-            box-shadow: var(--shadow-neon);
-        }
-
-        .nav-tab.active::before {
-            left: 0;
-        }
-
-        .stats-dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 35px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: var(--border-radius-lg);
-            border: 2px solid rgba(255, 59, 59, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition-base);
-            cursor: pointer;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: var(--gradient-fire);
-            opacity: 0;
-            transition: var(--transition-slow);
-            transform: rotate(45deg);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--primary-red);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .stat-card:hover::before {
-            opacity: 0.1;
-            animation: statRotate 3s linear infinite;
-        }
-
-        @keyframes statRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .stat-card-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .stat-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            animation: iconFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .stat-label {
-            font-size: 0.95em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .stat-value {
-            font-size: 3em;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-        }
-
-        .schedule-container {
-            position: relative;
+            font-weight: 500;
         }
 
         .schedule-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .schedule-grid.week-view {
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        }
-
-        .schedule-grid.day-view {
-            grid-template-columns: 1fr;
-            max-width: 800px;
-            margin: 0 auto;
         }
 
         .day-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-xl);
+            background: white;
+            border-radius: 20px;
             padding: 30px;
-            border: 2px solid rgba(255, 59, 59, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition-base);
-            cursor: pointer;
-        }
-
-        .day-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: var(--gradient-primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: var(--transition-base);
-        }
-
-        .day-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-fire);
-            opacity: 0;
-            transition: var(--transition-base);
-            z-index: 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
         }
 
         .day-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-red);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .day-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .day-card:hover::after {
-            opacity: 0.05;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-color: #667eea;
         }
 
         .day-card.today {
-            border: 3px solid var(--neon-red);
-            animation: neonBorder 2s ease-in-out infinite;
-            background: linear-gradient(135deg, rgba(255, 8, 68, 0.1), rgba(26, 5, 5, 0.9));
-        }
-
-        .day-card.today::before {
-            transform: scaleX(1);
-            height: 8px;
-            background: var(--gradient-neon);
-            animation: progressFlow 2s ease-in-out infinite;
-        }
-
-        @keyframes progressFlow {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        .day-card-content {
-            position: relative;
-            z-index: 1;
+            border: 3px solid #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
         }
 
         .day-header {
@@ -654,128 +100,80 @@
             justify-content: space-between;
             margin-bottom: 25px;
             padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 59, 59, 0.2);
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .day-card.today .day-header {
+            border-bottom-color: #667eea;
         }
 
         .day-name-wrapper {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .day-icon {
-            font-size: 2.5em;
-            animation: iconBounce 2s ease-in-out infinite;
-        }
-
-        @keyframes iconBounce {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-5px) rotate(5deg);
-            }
+            font-size: 2em;
         }
 
         .day-name {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: 800;
-            color: var(--text-primary);
-            text-transform: capitalize;
+            color: #2c3e50;
         }
 
-        .day-badge {
-            padding: 8px 18px;
-            background: var(--gradient-primary);
+        .today-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.85em;
             font-weight: 700;
-            color: white;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
         }
 
         .lessons-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .lesson-item {
-            background: linear-gradient(135deg, rgba(255, 59, 59, 0.05), rgba(26, 5, 5, 0.5));
-            border: 2px solid rgba(255, 59, 59, 0.2);
-            border-radius: var(--border-radius-md);
-            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 18px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition-base);
-            cursor: pointer;
-        }
-
-        .lesson-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-shimmer);
-            transition: var(--transition-slow);
+            gap: 15px;
+            transition: all 0.3s ease;
         }
 
         .lesson-item:hover {
-            transform: translateX(10px);
-            border-color: var(--primary-red);
-            background: linear-gradient(135deg, rgba(255, 59, 59, 0.1), rgba(26, 5, 5, 0.7));
-            box-shadow: var(--shadow-lg);
-        }
-
-        .lesson-item:hover::before {
-            left: 100%;
+            transform: translateX(5px);
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
         }
 
         .lesson-number {
-            min-width: 50px;
-            height: 50px;
-            background: var(--gradient-neon);
+            min-width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3em;
-            font-weight: 900;
+            font-size: 1.2em;
+            font-weight: 800;
             color: white;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            transition: var(--transition-base);
-        }
-
-        .lesson-number::before {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 2px solid var(--neon-red);
-            opacity: 0;
-            animation: numberPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes numberPulse {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
         }
 
         .lesson-item:hover .lesson-number {
-            transform: rotate(360deg) scale(1.1);
+            transform: scale(1.1);
         }
 
         .lesson-content {
@@ -783,250 +181,100 @@
         }
 
         .lesson-name {
-            font-size: 1.2em;
+            font-size: 1.15em;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #2c3e50;
             margin-bottom: 5px;
         }
 
         .lesson-time {
             font-size: 0.9em;
-            color: var(--text-muted);
+            color: #7f8c8d;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
         }
 
         .lesson-icon {
-            font-size: 2em;
-            transition: var(--transition-base);
+            font-size: 1.8em;
+            transition: transform 0.3s ease;
         }
 
         .lesson-item:hover .lesson-icon {
-            transform: scale(1.2) rotate(10deg);
+            transform: scale(1.15) rotate(5deg);
         }
 
         .lesson-special-note {
-            margin-top: 10px;
-            padding: 8px 15px;
-            background: rgba(255, 59, 59, 0.1);
-            border-left: 3px solid var(--accent-red);
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
             border-radius: 6px;
             font-size: 0.85em;
-            color: var(--text-secondary);
+            color: #856404;
             font-style: italic;
         }
 
-        .day-progress {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(255, 59, 59, 0.2);
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.9em;
-        }
-
-        .progress-label {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .progress-percentage {
-            color: var(--primary-red);
-            font-weight: 700;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 12px;
-            background: rgba(255, 59, 59, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--gradient-fire);
-            border-radius: 10px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 10px var(--neon-red);
-        }
-
-        .progress-bar-fill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient-shimmer);
-            animation: shimmer 2s infinite;
-        }
-
-        .progress-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255,255,255,0.3) 50%, 
-                transparent 100%
-            );
-            animation: progressGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes progressGlow {
-            0%, 100% {
-                transform: translateX(-100%);
-            }
-            50% {
-                transform: translateX(100%);
-            }
-        }
-
-        .no-lessons {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
-
-        .no-lessons-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            animation: iconFloat 3s ease-in-out infinite;
-        }
-
-        .no-lessons-text {
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
         @media (max-width: 768px) {
-            .header-title {
-                font-size: 2.5em;
+            .header h1 {
+                font-size: 2em;
             }
 
-            .stats-dashboard {
+            .schedule-grid {
                 grid-template-columns: 1fr;
             }
 
-            .schedule-grid.week-view {
-                grid-template-columns: 1fr;
+            .day-card {
+                padding: 25px 20px;
             }
 
-            .nav-tabs {
-                flex-direction: column;
-            }
-
-            .week-badge-container {
-                flex-direction: column;
+            .lesson-time {
+                font-size: 0.85em;
             }
         }
 
         @media (max-width: 480px) {
-            .app-wrapper {
-                padding: 10px;
+            body {
+                padding: 15px 10px;
             }
 
             .header {
                 padding: 30px 20px;
             }
 
-            .header-title {
-                font-size: 2em;
+            .header h1 {
+                font-size: 1.8em;
             }
 
-            .day-card {
-                padding: 20px;
+            .week-info {
+                flex-direction: column;
+                gap: 10px;
             }
 
-            .lesson-time {
+            .day-name {
+                font-size: 1.5em;
+            }
+
+            .lesson-icon {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <div class="app-wrapper">
-        <div class="container">
-            <div class="header">
-                <div class="header-content">
-                    <h1 class="header-title">📅 Расписание уроков</h1>
-                    <p class="header-subtitle">Твой путеводитель по учебной неделе</p>
-                    <div class="week-badge-container">
-                        <div class="week-badge" id="week-number">Неделя 1</div>
-                        <div class="date-display" id="current-date"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-tabs">
-                <button class="nav-tab active" onclick="switchView('week')">📅 Вся неделя</button>
-                <button class="nav-tab" onclick="switchView('day')">📌 Сегодня</button>
-            </div>
-
-            <div class="stats-dashboard">
-                <div class="stat-card">
-                    <div class="stat-card-content">
-                        <div class="stat-icon">📚</div>
-                        <div class="stat-label">Всего уроков</div>
-                        <div class="stat-value" id="total-lessons">0</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-content">
-                        <div class="stat-icon">⭐</div>
-                        <div class="stat-label">Уроков сегодня</div>
-                        <div class="stat-value" id="today-lessons">0</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-content">
-                        <div class="stat-icon">📆</div>
-                        <div class="stat-label">День недели</div>
-                        <div class="stat-value" id="day-of-week" style="font-size: 1.8em;">-</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="schedule-container">
-                <div class="schedule-grid week-view" id="schedule"></div>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Расписание уроков</h1>
+            <div class="week-info">
+                <div class="week-badge" id="week-number">Неделя 1</div>
+                <div class="date-display" id="current-date"></div>
             </div>
         </div>
+
+        <div class="schedule-grid" id="schedule"></div>
     </div>
 
     <script>
-        let currentView = 'week';
         const lessonTimes = [
             '08:00 - 08:45',
             '08:55 - 09:40',
@@ -1059,11 +307,6 @@
                 day: 'numeric' 
             };
             return new Date().toLocaleDateString('ru-RU', options);
-        }
-
-        function getDayName(dayIndex) {
-            const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-            return days[dayIndex];
         }
 
         function getSchedule(weekNumber) {
@@ -1106,7 +349,7 @@
         function getSubjectEmoji(subject) {
             const emojis = {
                 'Математика': '🔢',
-                'Русский язык': '📝',
+                'Русский язык': '✍️',
                 'Чтение': '📖',
                 'Физкультура': '⚽',
                 'Окружающий мир': '🌍',
@@ -1118,55 +361,6 @@
             return emojis[subject] || '📚';
         }
 
-        function switchView(view) {
-            currentView = view;
-            const buttons = document.querySelectorAll('.nav-tab');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const scheduleGrid = document.getElementById('schedule');
-            scheduleGrid.className = view === 'week' ? 'schedule-grid week-view' : 'schedule-grid day-view';
-            
-            displaySchedule();
-        }
-
-        function calculateProgress(dayName, lessons) {
-            const currentDay = getCurrentDay();
-            const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
-            const dayIndex = weekDays.indexOf(dayName);
-            
-            if (currentDay !== dayIndex + 1) {
-                return currentDay > dayIndex + 1 ? 100 : 0;
-            }
-            
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const currentTime = hours * 60 + minutes;
-            
-            if (currentTime < 8 * 60) return 0;
-            if (currentTime > 12 * 60 + 55) return 100;
-            
-            const lessonDuration = 45;
-            const breakDuration = 10;
-            const startTime = 8 * 60;
-            
-            let completedLessons = 0;
-            for (let i = 0; i < lessons.length; i++) {
-                const lessonStart = startTime + i * (lessonDuration + breakDuration);
-                const lessonEnd = lessonStart + lessonDuration;
-                
-                if (currentTime >= lessonEnd) {
-                    completedLessons++;
-                } else if (currentTime > lessonStart) {
-                    const lessonProgress = (currentTime - lessonStart) / lessonDuration;
-                    return ((completedLessons + lessonProgress) / lessons.length) * 100;
-                }
-            }
-            
-            return (completedLessons / lessons.length) * 100;
-        }
-
         function displaySchedule() {
             const weekNumber = getWeekNumber();
             const currentDay = getCurrentDay();
@@ -1175,42 +369,14 @@
 
             document.getElementById('week-number').textContent = `Неделя ${weekNumber}`;
             document.getElementById('current-date').textContent = formatDate();
-            document.getElementById('day-of-week').textContent = getDayName(currentDay);
-
-            let totalLessons = 0;
-            let todayLessons = 0;
-            const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
-
-            weekDays.forEach((day, index) => {
-                totalLessons += schedule[day].length;
-                if (currentDay === index + 1) {
-                    todayLessons = schedule[day].length;
-                }
-            });
-
-            document.getElementById('total-lessons').textContent = totalLessons;
-            document.getElementById('today-lessons').textContent = todayLessons;
 
             scheduleContainer.innerHTML = '';
 
-            const daysToShow = currentView === 'day' 
-                ? [weekDays[currentDay - 1]].filter(Boolean)
-                : weekDays;
+            const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
-            if (currentView === 'day' && (currentDay === 0 || currentDay === 6)) {
-                scheduleContainer.innerHTML = `
-                    <div class="no-lessons">
-                        <div class="no-lessons-icon">🎉</div>
-                        <div class="no-lessons-text">Сегодня выходной!</div>
-                    </div>
-                `;
-                return;
-            }
-
-            daysToShow.forEach((day, index) => {
-                const isToday = currentDay === weekDays.indexOf(day) + 1;
+            weekDays.forEach((day, index) => {
+                const isToday = currentDay === index + 1;
                 const lessons = schedule[day];
-                const progress = calculateProgress(day, lessons);
 
                 const dayCard = document.createElement('div');
                 dayCard.className = `day-card ${isToday ? 'today' : ''}`;
@@ -1231,6 +397,18 @@
                         }
                     }
 
+                    if (day === 'Четверг') {
+                        if (weekNumber % 2 === 1 || weekNumber === 0) {
+                            if (lessonIndex === 2) {
+                                specialNote = '<div class="lesson-special-note">1 и 3 недели - Русский язык</div>';
+                            }
+                        } else {
+                            if (lessonIndex === 2) {
+                                specialNote = '<div class="lesson-special-note">2 и 4 недели - Труд</div>';
+                            }
+                        }
+                    }
+
                     lessonsHTML += `
                         <li class="lesson-item">
                             <div class="lesson-number">${lessonIndex + 1}</div>
@@ -1245,29 +423,16 @@
                 });
 
                 dayCard.innerHTML = `
-                    <div class="day-card-content">
-                        <div class="day-header">
-                            <div class="day-name-wrapper">
-                                <div class="day-icon">${isToday ? '⭐' : '📚'}</div>
-                                <div class="day-name">${day}</div>
-                            </div>
-                            ${isToday ? '<div class="day-badge">Сегодня</div>' : ''}
+                    <div class="day-header">
+                        <div class="day-name-wrapper">
+                            <div class="day-icon">${isToday ? '⭐' : '📚'}</div>
+                            <div class="day-name">${day}</div>
                         </div>
-                        <ul class="lessons-list">
-                            ${lessonsHTML}
-                        </ul>
-                        ${isToday ? `
-                            <div class="day-progress">
-                                <div class="progress-info">
-                                    <span class="progress-label">Прогресс дня</span>
-                                    <span class="progress-percentage">${Math.round(progress)}%</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: ${progress}%"></div>
-                                </div>
-                            </div>
-                        ` : ''}
+                        ${isToday ? '<div class="today-badge">Сегодня</div>' : ''}
                     </div>
+                    <ul class="lessons-list">
+                        ${lessonsHTML}
+                    </ul>
                 `;
 
                 scheduleContainer.appendChild(dayCard);
