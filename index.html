@@ -42,29 +42,18 @@
             margin-bottom: 15px;
         }
 
-        .week-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .week-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: 700;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
         .date-display {
             color: #7f8c8d;
             font-size: 1.1em;
             font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .current-time {
+            color: #667eea;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-top: 10px;
         }
 
         .schedule-grid {
@@ -149,6 +138,19 @@
             align-items: center;
             gap: 15px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: transparent;
+            transition: all 0.3s ease;
         }
 
         .lesson-item:hover {
@@ -156,6 +158,8 @@
             border-color: #667eea;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
         }
+
+
 
         .lesson-number {
             min-width: 45px;
@@ -170,6 +174,20 @@
             color: white;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
             transition: transform 0.3s ease;
+        }
+
+        .lesson-item.current-lesson .lesson-number {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .lesson-item:hover .lesson-number {
@@ -187,12 +205,36 @@
             margin-bottom: 5px;
         }
 
+        .lesson-item.current-lesson .lesson-name {
+            color: #4CAF50;
+        }
+
         .lesson-time {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            display: none;
+        }
+
+        .lesson-status {
+            font-size: 0.85em;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .status-current {
+            background: #4CAF50;
+            color: white;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+            }
         }
 
         .lesson-icon {
@@ -204,15 +246,70 @@
             transform: scale(1.15) rotate(5deg);
         }
 
-        .lesson-special-note {
-            margin-top: 8px;
-            padding: 8px 12px;
-            background: #fff3cd;
-            border-left: 3px solid #ffc107;
-            border-radius: 6px;
-            font-size: 0.85em;
-            color: #856404;
-            font-style: italic;
+        .progress-section {
+            display: none;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .progress-stats {
+            font-size: 0.95em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.4) 50%, 
+                transparent 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         @media (max-width: 768px) {
@@ -229,7 +326,140 @@
             }
 
             .lesson-time {
-                font-size: 0.85em;
+                display: none;
+            }
+        }
+
+        .countdown-section {
+            margin-top: 40px;
+            background: white;
+            padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .countdown-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
+        }
+
+        .countdown-value {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .countdown-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-progress {
+            margin-top: 25px;
+        }
+
+        .countdown-progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .countdown-progress-percent {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .countdown-progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.4) 50%, 
+                transparent 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .countdown-value {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .countdown-section {
+                padding: 25px 20px;
+            }
+
+            .countdown-title {
+                font-size: 1.2em;
+            }
+
+            .countdown-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
         }
 
@@ -246,11 +476,6 @@
                 font-size: 1.8em;
             }
 
-            .week-info {
-                flex-direction: column;
-                gap: 10px;
-            }
-
             .day-name {
                 font-size: 1.5em;
             }
@@ -265,35 +490,90 @@
     <div class="container">
         <div class="header">
             <h1>📅 Расписание уроков</h1>
-            <div class="week-info">
-                <div class="week-badge" id="week-number">Неделя 1</div>
-                <div class="date-display" id="current-date"></div>
-            </div>
+            <div class="current-time" id="current-time"></div>
+            <div class="date-display" id="current-date"></div>
         </div>
 
         <div class="schedule-grid" id="schedule"></div>
+
+        <div class="countdown-section">
+            <div class="countdown-title">⏰ До конца учебного года</div>
+            <div class="countdown-stats">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days-left">0</div>
+                    <div class="countdown-label">Дней осталось</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="weeks-left">0</div>
+                    <div class="countdown-label">Недель осталось</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="months-left">0</div>
+                    <div class="countdown-label">Месяцев осталось</div>
+                </div>
+            </div>
+            <div class="countdown-progress">
+                <div class="countdown-progress-label">
+                    <span>Прогресс учебного года</span>
+                    <span class="countdown-progress-percent" id="year-progress">0%</span>
+                </div>
+                <div class="countdown-progress-bar">
+                    <div class="countdown-progress-fill" id="year-progress-bar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         const lessonTimes = [
-            '08:00 - 08:45',
-            '08:55 - 09:40',
-            '10:00 - 10:45',
-            '11:05 - 11:50',
-            '12:10 - 12:55'
+            { start: '08:00', end: '08:45' },
+            { start: '08:55', end: '09:40' },
+            { start: '10:00', end: '10:45' },
+            { start: '11:05', end: '11:50' },
+            { start: '12:10', end: '12:55' },
+            { start: '13:05', end: '13:50' }
         ];
 
-        function getWeekNumber() {
-            const startDate = new Date('2025-09-02');
-            const currentDate = new Date();
-            if (currentDate < startDate) {
-                return 0;
-            }
-            const diffTime = currentDate.getTime() - startDate.getTime();
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            const weekNumber = Math.floor(diffDays / 7) + 1;
-            return weekNumber;
-        }
+        const schedule = {
+            'Понедельник': [
+                'Разговоры О Важном',
+                'Физкультура',
+                'Математика',
+                'Русский язык',
+                'Орлята/Читательская компетенция',
+                'Говорим на русском языке'
+            ],
+            'Вторник': [
+                'Математика',
+                'Музыка',
+                'Русский язык',
+                'Чтение',
+                'Окружающий мир'
+            ],
+            'Среда': [
+                'Русский язык',
+                'Чтение',
+                'Математика',
+                'Физкультура',
+                'Весёлый английский',
+                'Проекты'
+            ],
+            'Четверг': [
+                'Математика',
+                'Русский язык',
+                'Чтение',
+                'ИЗО',
+                'Весёлый английский',
+                'Экология'
+            ],
+            'Пятница': [
+                'Чтение',
+                'Русский язык',
+                'Физкультура',
+                'Окружающий мир',
+                'Труд'
+            ]
+        };
 
         function getCurrentDay() {
             return new Date().getDay();
@@ -309,41 +589,9 @@
             return new Date().toLocaleDateString('ru-RU', options);
         }
 
-        function getSchedule(weekNumber) {
-            const isOddWeek = (weekNumber === 0) || (weekNumber % 2 === 1);
-            const schedule = {
-                'Понедельник': [
-                    'Разговоры о важном',
-                    'Физкультура',
-                    'Математика',
-                    'Окружающий мир'
-                ],
-                'Вторник': [
-                    'Чтение',
-                    isOddWeek ? 'Музыка' : 'ИЗО',
-                    'Русский язык'
-                ],
-                'Среда': [
-                    'Русский язык',
-                    'Чтение',
-                    'Математика'
-                ],
-                'Четверг': isOddWeek ? [
-                    'Математика',
-                    'Чтение',
-                    'Русский язык'
-                ] : [
-                    'Математика',
-                    'Русский язык',
-                    'Труд'
-                ],
-                'Пятница': [
-                    'Чтение',
-                    'Русский язык',
-                    'Физкультура'
-                ]
-            };
-            return schedule;
+        function formatTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
 
         function getSubjectEmoji(subject) {
@@ -356,19 +604,105 @@
                 'Музыка': '🎵',
                 'ИЗО': '🎨',
                 'Труд': '🔨',
-                'Разговоры о важном': '💬'
+                'Разговоры О Важном': '💬',
+                'Орлята/Читательская компетенция': '🦅',
+                'Говорим на русском языке': '🗣️',
+                'Весёлый английский': '🇬🇧',
+                'Проекты': '🎯',
+                'Экология': '🌱'
             };
             return emojis[subject] || '📚';
         }
 
+        function getCurrentLesson(lessons) {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes;
+
+            for (let i = 0; i < lessons.length && i < lessonTimes.length; i++) {
+                const [startHour, startMin] = lessonTimes[i].start.split(':').map(Number);
+                const [endHour, endMin] = lessonTimes[i].end.split(':').map(Number);
+                const startTime = startHour * 60 + startMin;
+                const endTime = endHour * 60 + endMin;
+
+                if (currentTime >= startTime && currentTime <= endTime) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        function getLessonStatus(lessonIndex, currentLessonIndex) {
+            if (currentLessonIndex === -1) return '';
+            if (lessonIndex === currentLessonIndex) return 'current';
+            if (lessonIndex < currentLessonIndex) return 'completed';
+            return '';
+        }
+
+        function calculateProgress(lessons, currentLessonIndex) {
+            if (currentLessonIndex === -1) {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const currentTime = hours * 60 + minutes;
+                
+                if (currentTime < 8 * 60) return 0;
+                
+                const [endHour, endMin] = lessonTimes[lessons.length - 1].end.split(':').map(Number);
+                const endTime = endHour * 60 + endMin;
+                
+                if (currentTime > endTime) return 100;
+                
+                return 0;
+            }
+            
+            if (currentLessonIndex >= lessons.length) return 100;
+            
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes;
+            
+            const [startHour, startMin] = lessonTimes[currentLessonIndex].start.split(':').map(Number);
+            const [endHour, endMin] = lessonTimes[currentLessonIndex].end.split(':').map(Number);
+            const startTime = startHour * 60 + startMin;
+            const endTime = endHour * 60 + endMin;
+            
+            const lessonProgress = (currentTime - startTime) / (endTime - startTime);
+            const completedLessons = currentLessonIndex;
+            const totalProgress = (completedLessons + lessonProgress) / lessons.length;
+            
+            return Math.min(100, Math.max(0, totalProgress * 100));
+        }
+
+        function calculateCountdown() {
+            const endDate = new Date('2025-05-28');
+            const now = new Date();
+            
+            const diffTime = endDate.getTime() - now.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffWeeks = Math.floor(diffDays / 7);
+            const diffMonths = Math.floor(diffDays / 30);
+            
+            const startDate = new Date('2024-09-01');
+            const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            const elapsedDays = Math.ceil((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            const progress = Math.min(100, Math.max(0, (elapsedDays / totalDays) * 100));
+            
+            document.getElementById('days-left').textContent = diffDays > 0 ? diffDays : 0;
+            document.getElementById('weeks-left').textContent = diffWeeks > 0 ? diffWeeks : 0;
+            document.getElementById('months-left').textContent = diffMonths > 0 ? diffMonths : 0;
+            document.getElementById('year-progress').textContent = Math.round(progress) + '%';
+            document.getElementById('year-progress-bar').style.width = progress + '%';
+        }
+
         function displaySchedule() {
-            const weekNumber = getWeekNumber();
             const currentDay = getCurrentDay();
-            const schedule = getSchedule(weekNumber);
             const scheduleContainer = document.getElementById('schedule');
 
-            document.getElementById('week-number').textContent = `Неделя ${weekNumber}`;
             document.getElementById('current-date').textContent = formatDate();
+            document.getElementById('current-time').textContent = formatTime();
 
             scheduleContainer.innerHTML = '';
 
@@ -377,6 +711,8 @@
             weekDays.forEach((day, index) => {
                 const isToday = currentDay === index + 1;
                 const lessons = schedule[day];
+                const currentLessonIndex = isToday ? getCurrentLesson(lessons) : -1;
+                const progress = isToday ? calculateProgress(lessons, currentLessonIndex) : 0;
 
                 const dayCard = document.createElement('div');
                 dayCard.className = `day-card ${isToday ? 'today' : ''}`;
@@ -384,38 +720,17 @@
                 let lessonsHTML = '';
                 lessons.forEach((lesson, lessonIndex) => {
                     const emoji = getSubjectEmoji(lesson);
-                    const time = lessonTimes[lessonIndex] || '';
                     
-                    let specialNote = '';
-                    if (day === 'Вторник' && lessonIndex === 1) {
-                        if (weekNumber === 0) {
-                            specialNote = '<div class="lesson-special-note">0 неделя - как 1 неделя: Музыка</div>';
-                        } else {
-                            specialNote = weekNumber % 2 === 1 
-                                ? '<div class="lesson-special-note">1 и 3 недели - Музыка</div>'
-                                : '<div class="lesson-special-note">2 и 4 недели - ИЗО</div>';
-                        }
-                    }
-
-                    if (day === 'Четверг') {
-                        if (weekNumber % 2 === 1 || weekNumber === 0) {
-                            if (lessonIndex === 2) {
-                                specialNote = '<div class="lesson-special-note">1 и 3 недели - Русский язык</div>';
-                            }
-                        } else {
-                            if (lessonIndex === 2) {
-                                specialNote = '<div class="lesson-special-note">2 и 4 недели - Труд</div>';
-                            }
-                        }
-                    }
+                    const status = isToday ? getLessonStatus(lessonIndex, currentLessonIndex) : '';
+                    const statusClass = status === 'current' ? 'current-lesson' : status === 'completed' ? 'completed' : '';
+                    const statusBadge = status === 'current' ? '<div class="lesson-status status-current">⚡ СЕЙЧАС ИДЁТ</div>' : '';
 
                     lessonsHTML += `
-                        <li class="lesson-item">
+                        <li class="lesson-item ${statusClass}">
                             <div class="lesson-number">${lessonIndex + 1}</div>
                             <div class="lesson-content">
                                 <div class="lesson-name">${lesson}</div>
-                                <div class="lesson-time">🕐 ${time}</div>
-                                ${specialNote}
+                                ${statusBadge}
                             </div>
                             <div class="lesson-icon">${emoji}</div>
                         </li>
@@ -440,7 +755,11 @@
         }
 
         displaySchedule();
-        setInterval(displaySchedule, 60000);
+        calculateCountdown();
+        setInterval(() => {
+            displaySchedule();
+            calculateCountdown();
+        }, 1000);
     </script>
 </body>
 </html>
