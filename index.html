@@ -371,15 +371,7 @@
     </aside>
   </main>
 
-  <footer class="footer">
-    <div class="next-line">
-      <span class="next-kicker">завтра</span>
-      <span id="tomorrowText">—</span>
-    </div>
-    <div class="footer-actions">
-      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);align-self:center">Собрать рюкзак по списку — отметь галочкой в тетради</span>
-    </div>
-  </footer>
+
 </div>
 
 <script>
@@ -390,14 +382,12 @@ const schedule = [
     {name:'Математика', icon:'🔢', dot:'dot-math'},
     {name:'Иностранный язык', icon:'🌍', dot:'dot-eng'},
     {name:'Чтение', icon:'📖', dot:'dot-read'},
-    {name:'Логопед', icon:'🗣️', dot:'dot-logo'},
   ]},
   { id:2, day:'Вторник', lessons:[
     {name:'Музыка', icon:'🎵', dot:'dot-music'},
     {name:'Русский язык', icon:'📝', dot:'dot-rus'},
     {name:'Чтение', icon:'📖', dot:'dot-read'},
     {name:'Математика', icon:'🔢', dot:'dot-math'},
-    {name:'Дефектолог', icon:'🧩', dot:'dot-def'},
   ]},
   { id:3, day:'Среда', lessons:[
     {name:'Русский язык', icon:'📝', dot:'dot-rus'},
@@ -405,14 +395,13 @@ const schedule = [
     {name:'Физкультура', icon:'🏃', dot:'dot-fiz'},
     {name:'Окружающий мир', icon:'🌿', dot:'dot-okm'},
     {name:'ИЗО', icon:'🎨', dot:'dot-izo'},
-    {name:'Логопед', icon:'🗣️', dot:'dot-logo'},
   ]},
   { id:4, day:'Четверг', lessons:[
     {name:'Математика', icon:'🔢', dot:'dot-math'},
     {name:'Русский язык', icon:'📝', dot:'dot-rus'},
     {name:'Иностранный язык', icon:'🌍', dot:'dot-eng'},
     {name:'Чтение', icon:'📖', dot:'dot-read'},
-    {name:'Труд', sub:'психолог', icon:'🔨', dot:'dot-trud'},
+    {name:'Труд', icon:'🔨', dot:'dot-trud'},
   ]},
   { id:5, day:'Пятница', lessons:[
     {name:'Русский язык', icon:'📝', dot:'dot-rus'},
@@ -504,9 +493,10 @@ function render(){
     empty.textContent = `В понедельник: ${schedule[0].lessons.map(l=>l.name).join(' / ')} — собери форму и сменку`;
     sub.textContent = 'понедельник стартует в 8:30';
   } else {
+    const total = schedule.reduce((s,d)=>s+d.lessons.length,0);
     heading.innerHTML = `Расписание — <span>неделя</span>`;
     badge.style.display='none';
-    count.innerHTML = `<b>26</b> уроков`;
+    count.innerHTML = `<b>${total}</b> уроков`;
     list.style.display='none';
     empty.style.display='block';
     sub.textContent = 'выбери день справа';
@@ -536,24 +526,7 @@ function render(){
     </div>`;
   }).join('');
 
-  // завтра - подпись внизу
-  const tomorrowEl = document.getElementById('tomorrowText');
-  if(isTomorrowView && active){
-    const after = schedule.find(s=>s.id===active.id+1);
-    tomorrowEl.innerHTML = after ? `<b>${after.day}:</b> ${after.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
-  } else if(active && !isWeekend){
-    const nextId = active.id + 1;
-    const tom = schedule.find(s=>s.id===nextId);
-    if(isTomorrowView) { /* already handled */ }
-    else tomorrowEl.innerHTML = tom ? `<b>${tom.day}:</b> ${tom.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
-  } else if(todayId){
-    const tom = schedule.find(s=>s.id===todayId+1);
-    tomorrowEl.innerHTML = tom ? `<b>${tom.day}:</b> ${tom.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
-  } else if(isWeekend){
-    tomorrowEl.innerHTML = `<b>Понедельник:</b> ${schedule[0].lessons.map(l=>l.name).join(', ')}`;
-  } else {
-    tomorrowEl.textContent = '—';
-  }
+
 }
 
 function tick(){
