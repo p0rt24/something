@@ -429,10 +429,12 @@ function getTodayId(){
 }
 
 function render(){
-  const todayId = getTodayId();
-  const isWeekend = new Date().getDay()===0 || new Date().getDay()===6;
+  const now = new Date();
+  const jsDay = now.getDay();
+  const todayId = jsDay>=1 && jsDay<=5 ? jsDay : null;
+  const isWeekend = jsDay===0 || jsDay===6;
+  const nowMin = now.getHours()*60 + now.getMinutes();
 
-  // today sheet
   const heading = document.getElementById('todayHeading');
   const badge = document.getElementById('todayBadge');
   const count = document.getElementById('todayCount');
@@ -440,20 +442,51 @@ function render(){
   const empty = document.getElementById('todayEmpty');
   const sub = document.getElementById('todaySub');
 
-  let active = null;
-  if(todayId) active = schedule.find(s=>s.id===todayId);
-  else if(isWeekend) active = null;
-  else active = schedule[0];
+  function lessonRange(i){ return {s:(8+i)*60+30, e:(9+i)*60+15}; }
+  function dayLastEnd(day){ return (9 + (day.lessons.length-1))*60 + 15; }
 
-  if(todayId && active){
-    heading.innerHTML = `Сегодня — <span>${active.day.toLowerCase()}</span>`;
-    badge.textContent = 'сегодня';
+  let active = null;
+  let highlightIdx = -1;
+  let isTomorrowView = false;
+  let activeBadge = 'сегодня';
+  let headingPrefix = 'Сегодня —';
+
+  // определяем активный лист
+  if(isWeekend){
+    active = null;
+  } else if(todayId){
+    const today = schedule.find(s=>s.id===todayId);
+    const lastEnd = dayLastEnd(today);
+    if(nowMin > lastEnd){
+      const tomorrowId = todayId + 1;
+      if(tomorrowId <= 5){
+        active = schedule.find(s=>s.id===tomorrowId);
+        isTomorrowView = true;
+        activeBadge = 'завтра';
+        headingPrefix = 'Завтра —';
+        highlightIdx = -1;
+      } else {
+        // пятница вечер -> выходные
+        active = null;
+      }
+    } else {
+      active = today;
+      for(let i=0;i<active.lessons.length;i++){
+        const {s,e} = lessonRange(i);
+        if(nowMin >= s && nowMin < e){ highlightIdx = i; break; }
+      }
+    }
+  }
+
+  if(active){
+    heading.innerHTML = `${headingPrefix} <span>${active.day.toLowerCase()}</span>`;
+    badge.textContent = activeBadge;
     badge.style.display='inline-block';
     count.innerHTML = `<b>${active.lessons.length}</b> уроков`;
     list.style.display='flex';
     empty.style.display='none';
     list.innerHTML = active.lessons.map((l,i)=>`
-      <div class="lesson-row ${i===1 ? 'is-highlight' : ''}">
+      <div class="lesson-row ${i===highlightIdx ? 'is-highlight' : ''}">
         <div class="lnum">${i+1}</div>
         <div class="licon">${l.icon}</div>
         <div class="lesson-name2">${l.name}${l.sub?` <small>(${l.sub})</small>`:''} <span class="mini-dot ${l.dot}"></span></div>
@@ -461,9 +494,10 @@ function render(){
       </div>
     `).join('');
     sub.textContent = active.lessons.map(l=>l.name).join(' / ');
-  } else if(isWeekend){
+  } else if(isWeekend || (todayId===5 && nowMin > dayLastEnd(schedule.find(s=>s.id===5)))){
     heading.innerHTML = `Выходные — <span>отдыхаем</span>`;
-    badge.textContent = 'суббота / воскресенье';
+    badge.textContent = 'выходные';
+    badge.style.display='inline-block';
     count.innerHTML = `<b>0</b> уроков`;
     list.style.display='none';
     empty.style.display='block';
@@ -480,8 +514,10 @@ function render(){
 
   // stack - остальные дни (исключая активный)
   const stack = document.getElementById('stackGrid');
-  const others = todayId ? schedule.filter(s=>s.id!==todayId) : schedule;
-  // если выходные - показываем все 5
+  let others;
+  if(active) others = schedule.filter(s=>s.id!==active.id);
+  else if(isWeekend) others = schedule;
+  else others = schedule.filter(s=>s.id!==todayId);
   stack.innerHTML = others.map(d=>{
     return `<div class="day-card" id="day-${d.id}">
       <div class="day-card-head">
@@ -500,9 +536,17 @@ function render(){
     </div>`;
   }).join('');
 
-  // завтра
+  // завтра - подпись внизу
   const tomorrowEl = document.getElementById('tomorrowText');
-  if(todayId){
+  if(isTomorrowView && active){
+    const after = schedule.find(s=>s.id===active.id+1);
+    tomorrowEl.innerHTML = after ? `<b>${after.day}:</b> ${after.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
+  } else if(active && !isWeekend){
+    const nextId = active.id + 1;
+    const tom = schedule.find(s=>s.id===nextId);
+    if(isTomorrowView) { /* already handled */ }
+    else tomorrowEl.innerHTML = tom ? `<b>${tom.day}:</b> ${tom.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
+  } else if(todayId){
     const tom = schedule.find(s=>s.id===todayId+1);
     tomorrowEl.innerHTML = tom ? `<b>${tom.day}:</b> ${tom.lessons.map(l=>l.name).join(', ')}` : '<b>Выходные</b> — можно выдохнуть';
   } else if(isWeekend){
@@ -520,7 +564,7 @@ function tick(){
 }
 render();
 tick();
-setInterval(tick, 30000);
+setInterval(()=>{ tick(); render(); }, 30000);
 </script>
 </body>
 </html>
